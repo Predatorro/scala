@@ -8,6 +8,10 @@ object Main {
         print(pascal(col, row) + " ")
       println()
     }
+
+
+    countChange(100, List(3, 6, 1, 2, 36, 44, 7, 7, 2, 7, 3, 12, 35, 10
+    ))
   }
 
   /**
@@ -21,30 +25,30 @@ object Main {
     * Exercise 2
     */
   def balance(chars: List[Char]): Boolean = {
-    if (chars.isEmpty) true
-    else return chain(chars)
-
-    def chain(chars: List[Char]): Boolean = {
-      if (chars.isEmpty) true
-      else if (chars.head == '(') needClose(chars.tail, 1)
-      else if (chars.head == ')') false
-      else chain(chars.tail)
-    }
 
     def needClose(chars: List[Char], times: Int): Boolean = {
-      if (times == 0) chain(chars)
-      else if (chars.isEmpty) false
+      if (chars.isEmpty) times == 0
       else if (chars.head == '(') needClose(chars.tail, times + 1)
-      else if (chars.head == ')') needClose(chars.tail, times - 1)
+      else if (chars.head == ')') times > 0 && needClose(chars.tail, times - 1)
       else needClose(chars.tail, times)
     }
 
-    true
+    needClose(chars, 0)
   }
+
 
   /**
     * Exercise 3
     */
-  def countChange(money: Int, coins: List[Int]): Int = ???
+  def countChange(money: Int, coins: List[Int]): Int = {
+    if (money == 0)
+      1
+    else if (money > 0 && coins.nonEmpty) {
+      countChange(money - coins.head, coins) +
+        countChange(money, coins.tail)
+    }
+    else
+      0
+  }
 }
 
